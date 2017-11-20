@@ -19,9 +19,11 @@ class BooksSearch extends Component {
   updateQuery = (query) => {
     this.setState({foundBooks:[], query: query.trim()})
 
-    BooksAPI.search(query, 20).then((res) => {
-      this.setState({ foundBooks: res })
-    })
+    if (query.trim().length > 0) {
+      BooksAPI.search(query, 20).then((books) => {
+        this.setState({ foundBooks: books })
+      })
+    }
   }
 
   render() {
@@ -50,6 +52,7 @@ class BooksSearch extends Component {
           </div>
         </div>
         <div className="search-books-results">
+          {foundBooks.length > 0 && (
           <ol className="books-grid">
              {foundBooks.map((b) => (
                 <Book key={b.id}
@@ -58,6 +61,7 @@ class BooksSearch extends Component {
                 />
              ))}
           </ol>
+          )}
         </div>
       </div>
     )}

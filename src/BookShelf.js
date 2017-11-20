@@ -18,6 +18,7 @@ class BookShelf extends Component {
          <div className="bookshelf">
             <h2 className="bookshelf-title">{this.props.title}</h2>
                <div className="bookshelf-books">
+               {books.length > 0 && (
                  <ol className="books-grid">
                    {books.map((book) => (
                       <Book key={book.id}
@@ -26,6 +27,7 @@ class BookShelf extends Component {
                       />
                    ))}
                  </ol>
+               )}
                </div>
          </div>
       )
