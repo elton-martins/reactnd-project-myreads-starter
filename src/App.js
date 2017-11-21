@@ -29,6 +29,8 @@ class BooksApp extends Component {
   changeShelf = (book,newShelf) => {
      book.shelf = newShelf
 
+     alert("Teste")
+
      // Atualiza o state antes de dar update no server para evitar delay
      this.setState((state) => ({
         books: this.state.books.filter((b) => b.id !== book.id).concat([ book ])
