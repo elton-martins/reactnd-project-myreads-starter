@@ -4,6 +4,7 @@ import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Book from './Book'
 import PropTypes from 'prop-types'
+import {DebounceInput} from 'react-debounce-input'
 
 class BooksSearch extends Component {
 
@@ -21,7 +22,12 @@ class BooksSearch extends Component {
 
     if (query.trim().length > 0) {
       BooksAPI.search(query, 20).then((books) => {
-        this.setState({ foundBooks: books })
+
+        const bookList = books.map((b) => {
+          return this.props.books.find((book) => book.id === b.id) || b
+        })
+
+        this.setState({ foundBooks: bookList })
       })
     }
   }
@@ -43,8 +49,10 @@ class BooksSearch extends Component {
               However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
               you don't find a specific author or title. Every search is limited by search terms.
             */}
-            <input
+            <DebounceInput
                type="text"
+               minLength="1"
+               debounceTimeout="300"
                placeholder="Search by title or author"
                value={query}
                onChange={(event) => this.updateQuery(event.target.value)}
@@ -54,7 +62,7 @@ class BooksSearch extends Component {
         <div className="search-books-results">
           {foundBooks.length > 0 && (
           <ol className="books-grid">
-             {foundBooks.map((b) => (
+             {foundBooks && foundBooks.map((b) => (
                 <Book key={b.id}
                       book={b}
                       onChangeShelf={this.props.onChangeShelf}
